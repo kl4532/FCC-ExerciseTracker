@@ -62,9 +62,15 @@ let { userId, description, duration, date } = req.body;
   });
 });
 app.get("/api/exercise/log", (req, res)=>{
-  let { id, from, to, limit } = req.query;
-  let count =0;
+  //let { id, from, to, limit } = req.body || req.query ;
+  let id = req.body.id || req.query.id;
+  let from = req.body.from || req.query.from;
+  let to = req.body.to || req.query.to;
+  let limit = req.body.limit || req.query.limit;
+  console.log("id: "+ id + "\nfrom: " + from + "\nlimit:" + limit );
+  let count = 0;
   User.findById(id).exec((err, usr)=>{
+    if(err) res.send("No such record in database");
     let out = usr.log.filter(item => {
       let dt, dtFr, dtTo;
       if(from && to && limit){
@@ -73,19 +79,35 @@ app.get("/api/exercise/log", (req, res)=>{
         dtFr = new Date(from);
         dtTo = new Date(to);
         return dt>=dtFr && dt<=dtTo && count<=limit;
-      }else if(from && to){
+      }else if(from && to && !limit){
         count++;
         dt = new Date(item.date);
         dtFr = new Date(from);
         dtTo = new Date(to);
         return dt>=dtFr && dt<=dtTo;
       
-      }else if(from && limit && !to){
+      }else if(from && !to && limit) {
         count++;
         dt = new Date(item.date);
         dtFr = new Date(from);
         return dt>=dtFr && count<=limit; 
-      }else if(limit){
+      }else if(from && !to && !limit){
+        count++;
+        dt = new Date(item.date);
+        dtFr = new Date(from);
+        return dt>=dtFr; 
+      }else if(!from && to && limit){
+        count++;
+        dt = new Date(item.date);
+        dtTo = new Date(to);
+        return dt<=dtTo && count<=limit;
+      }else if(!from && to && !limit){
+        count++;
+        dt = new Date(item.date);
+        dtTo = new Date(to);
+        return dt<=dtTo;
+      }
+      else if(limit){
         count++;
         return count<=limit;
       }else return item.date;

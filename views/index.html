@@ -23,25 +23,38 @@
             <input id="uid" type="text" name="userId" placeholder="userId*">
             <input id="desc" type="text" name="description" placeholder="description*">
             <input id="dur" type="text" name="duration" placeholder="duration* (mins.)">
-            <input id="dat" type="text" name="date" placeholder="date (yyyy-mm-dd)">
+            <label for="dat">Select date:</label>
+            <input id="dat" type="date" name="date" placeholder="date (yyyy-mm-dd)">
             <input type="submit" value="Submit">
           </form>
-          <a href="https://fcc-rest.glitch.me/api/exercise/users">Users database</a>
-          <p><strong>GET users's exercise log: </strong><code>GET /api/exercise/log?{userId}[&amp;from][&amp;to][&amp;limit]</code></p>
-          <p><strong>{ }</strong> = required, <strong>[ ]</strong> = optional</p>
-          <p><strong>from, to</strong> = dates (yyyy-mm-dd); <strong>limit</strong> = number</p>
+          <form action="/api/exercise/log" method="get">
+            <h3>Show user log</h3>
+            <p><code>GET /api/exercise/log</code></p>
+            <input id="id" type="text" name="id" placeholder="userId*">
+            <label for="from">Date from:</label>
+            <input type="date" name="from" min="2000-01-01">
+            <label for="to">Date to:</label>
+            <input type="date" name="to" max="2179-12-31">
+            <label for="limit">Select limit of records per log:</label>
+            <input type="number" name="limit" min="1" placeholder="limit">
+            <input type="submit" value="Submit">
+          </form>
+          <a href="https://fcc-rest.glitch.me/api/exercise/users"><button class="udb">Users database</button></a>
+         <h2>Description</h2>
+          <p>Use this app to:</p>
+          <ol>
+           <li>Create new user</li>
+           <li>Add exercises to user account (user ID needed)</li>
+           <li>Read log of user exercises (user ID needed)</li>
+          </ol>
       </div>
      <hr/>
-     <h2>User Stories</h2>
-       <ol>
-         <li>I can create a user by posting form data username to /api/exercise/new-user and returned will be an object with username and _id </li>
-         <li>I can get an array of all users by getting api/exercise/users with the same info as when creating a user</li>
-         <li>I can add an exercise to any user by posting form data userId(_id), description, duration, and optionally date to /api/exercise/add. If no date supplied it will use current date. Returned will the the user object with also with the exercise fields added.</li>
-         <li>I can retrieve a full exercise log of any user by getting /api/exercise/log with a parameter of userId(_id). Return will be the user object with added array log and count (total exercise count).</li>
-         <li>I can retrieve part of the log of any user by also passing along optional parameters of from & to or limit. (Date format yyyy-mm-dd, limit = int)</li>
-       </ol>
-  
-  
+     <div class="footer">
+        <p>
+          by <a href="http://www.freecodecamp.com/">freeCodeCamp</a> |
+        edited and functionality added by Corny
+        </p>
+      </div>
   </body>
 
 </html>
